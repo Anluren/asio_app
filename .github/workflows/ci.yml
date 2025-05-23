@@ -1,0 +1,23 @@
+name: C++ CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ libasio-dev libleveldb-dev
+    - name: Configure CMake
+      run: cmake -S. -Bbuild
+    - name: Build
+      run: cmake --build build
+    - name: Run server build
+      run: test -f build/server
+    - name: Run client build
+      run: test -f build/client
